@@ -1,0 +1,5 @@
+jenkins-agent (1.0.0) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- tphan025 <trung.thanh.phan@canonical.com>  Wed, 13 Dec 2023 17:13:15 +0100

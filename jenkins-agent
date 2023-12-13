@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Copyright 2023 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+err() {
+  echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
+}
+
+info() {
+   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*"
+}
+
+set -eu -o pipefail
+
+export LC_ALL=C
+export TERM=xterm
+
+readonly JENKINS_HOME="/var/lib/jenkins"
+
+if ! mkdir -p $JENKINS_HOME; then
+    err "Error initializing the agent's home directory"
+    exit 1
+fi
+cd $JENKINS_HOME
+
+
+if [[ "${JENKINS_URL}" == "unset" || "${JENKINS_AGENT}" == "unset" || "${JENKINS_TOKEN}" == "unset" ]]; then
+    if [[ "${JENKINS_URL}" == "unset" ]]; then
+        err "JENKINS_URL needs to be configured"
+    fi
+    if [[ "${JENKINS_AGENT}" == "unset" ]]; then
+        err "JENKINS_AGENT needs to be configured"
+    fi
+    if [[ "${JENKINS_TOKEN}" == "unset" ]]; then
+        err "JENKINS_TOKEN needs to be configured"
+    fi
+    err "Invalid configuration, missing value(s)"
+    exit 1
+fi
+
+if ! curl --connect-timeout 60 "${JENKINS_URL}/jnlpJars/agent.jar" -o ${JENKINS_HOME}/agent.jar; then
+    err Unable to download agent binary
+    stop
+fi
+
+# Specify the agent as ready
+touch "${JENKINS_HOME}/.ready"
+if ! java -jar "${JENKINS_HOME}/agent.jar" -jnlpUrl "${JENKINS_URL}/computer/${JENKINS_AGENT}/slave-agent.jnlp" -workDir "${JENKINS_HOME}" -noReconnect -secret "${JENKINS_TOKEN}"; then
+    err "Error connecting to jenkins"
+    # Remove ready mark if unsuccessful
+    rm $JENKINS_HOME/.ready
+    exit 1
+fi

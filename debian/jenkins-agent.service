@@ -1,0 +1,8 @@
+[Unit]
+Description=Simple demonstration service
+
+[Service]
+ExecStart=/usr/bin/jenkins-agent
+
+[Install]
+WantedBy=multi-user.target
