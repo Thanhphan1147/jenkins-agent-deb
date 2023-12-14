@@ -1,4 +1,4 @@
-jenkins-agent (1.0.0) UNRELEASED; urgency=medium
+jenkins-agent (1.0.0) jammy; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
