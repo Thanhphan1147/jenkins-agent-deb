@@ -1,5 +1,5 @@
 Source: jenkins-agent
-Section: test
+Section: java
 Priority: optional
 Maintainer: Phan Trung Thanh <trung.thanh.phan@canonical.com>
 Build-Depends: debhelper-compat (= 13)
