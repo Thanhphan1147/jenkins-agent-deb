@@ -1,3 +1,9 @@
+jenkins-agent (1.0.1) jammy; urgency=medium
+
+  * Update service type
+
+ -- tphan025 <trung.thanh.phan@canonical.com>  Thu, 14 Dec 2023 08:30:15 +0100
+
 jenkins-agent (1.0.0) jammy; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
